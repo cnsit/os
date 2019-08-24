@@ -1,3 +1,5 @@
+# 环境准备
+- sudo apt install gcc-multilib
 # c call asm
 - nasm -f elf32 add.asm -o add.o
 - gcc -m32 main.c add.o -o main
