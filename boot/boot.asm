@@ -35,5 +35,6 @@ BS_FileSysType 	db "FAT12   " 		;8字节
 fn_fd_read_one_sector:
 	push bp;
 	mov bp, sp
-	
+	sub esp, 2	
+	mov byte[bp-2], cl
 lb_start:
