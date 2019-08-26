@@ -14,7 +14,7 @@ int64_t string_to_int(const char* str, const int32_t len) {
 	}
 	return res;
 }
-int64_t string_to_binary(char* str) {
+int64_t string_to_binary(const char* str) {
 	//17.1890 => 1.71890
 	//0.71890 => binary
 
@@ -29,8 +29,8 @@ int64_t string_to_binary(char* str) {
 	else if (*str == 0x2b) {
 		str++; //positive sign, nothing else to do
 	}
-	char* backup = str;
-	char man[20], ex = 0;
+	const char* backup = str;
+	char man[20], ex = '0';
 	int32_t index = 0;
 	int32_t exp = 0; //exp to move integer part (0, 10)
 	while (*str!= 0) {
@@ -40,13 +40,18 @@ int64_t string_to_binary(char* str) {
 			if (exp > 0) {
 				ex = *backup;
 			}
+			//取整数部分
 			while ((backup + 1) < str) {
 				man[index++] = backup[1];
 				backup++;
 			}
 			str++;
+			//取小数部分
 			while (*str != 0) {
 				man[index++] = *str;
+				if (*str == 0x30 && exp <= 0) { //star with zero
+					exp--;
+				}
 				str++;
 			}
 			man[index] = 0;
@@ -57,6 +62,6 @@ int64_t string_to_binary(char* str) {
 	}
 	int64_t integer_part = string_to_int(&ex, 1);
 	int64_t decimal_part = string_to_int(man, 0);
-	std::cout << integer_part << "." << decimal_part << "e" << exp;
+	std::cout << integer_part << "." << decimal_part << "e" << exp <<std::endl;
 	return decimal_part;
 }
